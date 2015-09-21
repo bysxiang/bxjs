@@ -33,7 +33,7 @@ var BxMenu = (function ()
 	obj.prototype.bind = function ()
 	{
 		var that = this;
-		this.element.onclick = function ()
+		this.element.onclick = function (event)
 		{
 			var ul = that.menu;
 			if ( !document.getElementById(that.shadeDivId) )
@@ -57,6 +57,8 @@ var BxMenu = (function ()
 			}
 
 			that.menu.style.display = "";
+
+			event.stopPropagation();
 		};
 	};
 
