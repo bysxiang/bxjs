@@ -36,26 +36,16 @@ var BxMenu = (function ()
 		this.element.onclick = function (event)
 		{
 			var ul = that.menu;
-			if ( !document.getElementById(that.shadeDivId) )
+			var tempDiv = document.createElement("div");
+			tempDiv.id = randomId("shade_div");
+			tempDiv.style.cssText = "width:100%; height:100%; position:absolute; top: 0; left: 0;";
+			tempDiv.onclick = function ()
 			{
-				var tempDiv = document.createElement("div");
-				tempDiv.id = randomId("shade_div");
-				tempDiv.style.cssText = "width:100%; height:100%; position:absolute; top: 0; left: 0;";
-				tempDiv.onclick = function ()
-				{
-					
-					that.menu.style.display = "none";
-					//this.style.display = "none";
-					document.body.removeChild(this); //从dom中移除当前节点
-				};
+				that.menu.style.display = "none";
+				document.body.removeChild(this); //从dom中移除当前节点
+			};
 
-				document.body.appendChild(tempDiv);
-			}
-			else
-			{
-				document.getElementById(that.shadeDivId).style.display = "block";
-			}
-
+			document.body.appendChild(tempDiv);
 			that.menu.style.display = "";
 
 			event.stopPropagation();
