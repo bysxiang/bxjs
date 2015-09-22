@@ -38,7 +38,13 @@ var BxMenu = (function ()
 			var ul = that.menu;
 			var tempDiv = document.createElement("div");
 			tempDiv.id = randomId("shade_div");
-			tempDiv.style.cssText = "width:100%; height:100%; position:absolute; top: 0; left: 0;";
+			
+			var cssText = "width: " + document.documentElement.scrollWidth + "px; height: "
+				+ document.documentElement.scrollHeight + "px;";
+			cssText += "background-color: black; opacity: 0.5; position:absolute; top: 0; left: 0;";
+			
+			tempDiv.style.cssText = cssText;
+			
 			tempDiv.onclick = function ()
 			{
 				that.menu.style.display = "none";
