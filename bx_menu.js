@@ -37,7 +37,7 @@ var BxMenu = (function ()
 		{
 			var ul = that.menu;
 			var tempDiv = document.createElement("div");
-			tempDiv.id = randomId("shade_div");
+			tempDiv.id = that.shadeDivId;
 			
 			var cssText = "width: " + document.documentElement.scrollWidth + "px; height: "
 				+ document.documentElement.scrollHeight + "px;";
