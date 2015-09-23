@@ -16,6 +16,19 @@
 				
 				assert.equal(menuObj.zIndex, 60, "zIndex默认值通过");
 				assert.equal(menuObj.zIndex, parseInt( shadeDiv.style.zIndex ), "zIndex相同");
+
+				var menuObj2 = new BxMenu({ element: document.getElementById("btn2"),
+					menu: document.getElementById("ul2"),
+					zIndex: 80 });
+				var element2 = menuObj2.element;
+				element2.click();
+				var shadeDiv2 = document.getElementById(menuObj2.shadeDivId);
+				var menuUl2 = menuObj2.menu;
+				
+				assert.equal(menuObj2.zIndex, 80, "zIndex值一致");
+				assert.equal(menuObj2.zIndex, parseInt(shadeDiv2.style.zIndex), "zIndex相同");
+
+
 			});
 		</script>
 	</head>
@@ -33,6 +46,13 @@
     		<li>中国</li>
     		<li>德国</li>
     		<li>美帝</li>
+    	</ul>
+
+    	<p><input type="button" id="btn2" value="菜单按钮2" /></p>
+    	<ul id="ul2" style="display:none;">
+    		<li>Java</li>
+    		<li>C#</li>
+    		<li>Rust</li>
     	</ul>
 	</body>
 </html>
