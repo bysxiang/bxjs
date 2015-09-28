@@ -1,0 +1,168 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="../lib/qunit-1.19.0.js"></script>
+		<script type="text/javascript" src="../bx_step.js"></script>
+		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
+		<script type="text/javascript">
+
+			QUnit.test("测试分步组件1", function (assert)
+			{
+				var arr = new Array();
+				arr.push(document.getElementById("div1"));
+				arr.push(document.getElementById("div2"));
+				arr.push(document.getElementById("div3"));
+
+				var bxStep = new BxStep(arr);
+
+				var index = 0;
+				bxStep.showIndex(index);
+
+				assert.notEqual(bxStep.elements[index].style.display, "none", "bxStep.elements[0]显示状态不为none");
+				assert.equal(arr[index].style.display, bxStep.elements[index].style.display, "对应元素显示效果相同");
+
+				var b = true;
+				for (var i = 0; i < bxStep.elements.length; i++)
+				{
+					if (index != i)
+					{
+						if (bxStep.elements[i].style.display == "none")
+						{
+							b = true;
+						}
+						else
+						{
+							false;
+						}
+					}
+				}
+				assert.ok(b, "测试showIndex");
+
+				try
+				{
+					bxStep.showIndex(-1);
+				}
+				catch (error)
+				{
+					assert.ok(error instanceof Error, "是否抛出异常");
+				}
+
+				//测试hideIndex
+				bxStep.hideIndex(index);
+				assert.equal(bxStep.elements[0].style.display, "none", "index被隐藏");
+
+				//测试getShowIndex, getShowElement
+				assert.equal(bxStep.getShowIndex(), -1, "当前显示层index为-1");
+				assert.equal(bxStep.getShowElement(), null, "当前显示层对象为null");
+
+				//测试hideAll
+				bxStep.showIndex(1);
+				bxStep.hideAll();
+				var b1 = true;
+				for (var i = 0; i < bxStep.elements.length; i++)
+				{
+					if (bxStep.elements[i].style.display == "none")
+					{
+						b1 = true;
+					}
+					else
+					{
+						b1 = false;
+					}
+				}
+				assert.ok(b1, "是否全部隐藏了");
+
+				//测试添加层
+				var item = document.getElementById("div4");
+				bxStep.add(item);
+				assert.equal(bxStep.elements.length, 4, "当前长度为4");
+				assert.equal(bxStep.elements[3], item, "当前最后一个元素等于添加的元素");
+
+				var item2 = document.getElementById("div5");
+				bxStep.add(item2, 1);
+				assert.equal(bxStep.elements.length, 5, "当前长度为5");
+				assert.equal(bxStep.elements[1], item2, "插入的元素，与对象内部元素一致");
+
+				try
+				{
+					var item3 = document.getElementById("div6");
+					bxStep.add(item3, 18);
+					
+				}
+				catch (error)
+				{
+					assert.ok(error instanceof Error, "是否抛出了Error异常");
+				}
+
+				try
+				{
+					var item4 = document.getElementById("div7");
+					bxStep.add(item4, bxStep.elements.length);
+					assert.ok(true, "可以插入与总长度相等的索引");
+					assert.equal(bxStep.elements[bxStep.elements.length - 1], item4, "插入元素与内部元素一致");
+				}
+				catch (error)
+				{
+					assert.ok(error instanceof Error, "是否抛出了Error异常");
+				}	
+
+				//测试removeIndex方法
+				var oldLength = bxStep.elements.length;
+				var removeElement = bxStep.elements[3];
+				bxStep.removeIndex(3);
+				assert.equal(oldLength - 1, bxStep.elements.length, "现在长度为5");
+				assert.notEqual(bxStep.elements[3], null, "现在索引3不为false");
+				assert.notEqual(removeElement, bxStep.elements[3], "移除的元素和现在3这个索引元素不同");
+				var notFound = true;
+				for (var i = 0; i < bxStep.elements.length; i++)
+				{
+					if (bxStep.elements[i] == removeElement)
+					{
+						notFound = false;
+					}
+				}
+
+				assert.ok(notFound, "已有数组中不存在被删除的元素");
+			});
+				
+		</script>
+	</head>
+
+	<body>
+		<h1 id="qunit-header">QUnit测试</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture"></div>
+
+		<div id="div1" style="display:none; background-color: yellow; min-height: 200px; min-width: 200px; margin-bottom: 20px;">
+
+		<div>    	
+
+		<div id="div2" style="display:none; background-color: green; min-height: 200px; min-width: 200px; margin-bottom: 20px;">
+
+		<div> 
+
+		<div id="div3" style="display:none; background-color: red; min-height: 200px; min-width: 200px; margin-bottom: 20px;">
+
+		<div> 
+
+		<div id="div4" style="display:none; background-color: #CA8EFF; min-height: 200px; min-width: 200px; margin-bottom: 20px;">
+
+		</div>
+
+		<div id="div5" style="display:none; background-color: black; min-height: 200px; min-width: 200px; margin-bottom: 20px;">
+
+		</div>
+
+		<div id="div6" style="display:none; background-color: black; min-height: 200px; min-width: 200px; margin-bottom: 20px;">
+
+		</div>
+
+		<div id="div7" style="display:none; background-color: black; min-height: 200px; min-width: 200px; margin-bottom: 20px;">
+
+		</div>
+
+	</body>
+</html>
