@@ -37,6 +37,7 @@ var BxMenu = (function ()
 		this.element.onclick = function (event)
 		{
 			var ul = that.menu;
+			var ulParent = ul.parentNode;
 			var tempDiv = document.createElement("div");
 			tempDiv.id = that.shadeDivId;
 			
@@ -49,12 +50,10 @@ var BxMenu = (function ()
 			tempDiv.onclick = function ()
 			{
 				that.menu.style.display = "none";
-				document.body.removeChild(this); //从dom中移除当前节点
+				ulParent.removeChild(this);//从dom中移除当前节点
 			};
 
-			var ulParent = ul.parentNode;
 			ulParent.appendChild(tempDiv);
-			//document.body.appendChild(tempDiv);
 			that.menu.style.display = "";
 
 			event.stopPropagation();

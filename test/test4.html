@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="../lib/qunit-1.19.0.js"></script>
+		<script type="text/javascript" src="../bx_menu.js"></script>
+		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
+		<script type="text/javascript">
+			QUnit.test("测试父元素", function (assert)
+			{
+				var menuObj = new BxMenu({ element: document.getElementById("btn"),
+					menu: document.getElementById("ul") });
+				var element = menuObj.element;
+				element.click();
+				var shadeDiv = document.getElementById(menuObj.shadeDivId);
+				var menuUl = menuObj.menu;
+
+				assert.equal(menuUl.parentNode, shadeDiv.parentNode, "ul和遮罩是兄弟元素");
+				assert.equal(shadeDiv.parentNode, document.getElementById("p1"), "遮罩div的父元素和ul的父元素相同");
+			});
+		</script>
+	</head>
+
+	<body>
+		<h1 id="qunit-header">QUnit测试</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture"></div>
+
+    	<div id="p1">
+    		<p><input type="button" id="btn" value="菜单按钮" /></p>
+	    	<ul id="ul" style="display:none;">
+	    		<li>中国</li>
+	    		<li>德国</li>
+	    		<li>美帝</li>
+	    	</ul>
+    	</div>
+
+    	
+
+	</body>
+</html>
