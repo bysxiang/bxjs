@@ -43,7 +43,7 @@ var BxMenu = (function ()
 			
 			var cssText = "width: " + document.documentElement.scrollWidth + "px; height: "
 				+ document.documentElement.scrollHeight + "px;" + "z-index:" + that.zIndex + ";";
-			cssText += "background-color: black; opacity: 0.5; position:absolute; top: 0; left: 0;";
+			cssText += "background-color: black; opacity: 0.1; position: fixed; top: 0; left: 0;";
 			
 			tempDiv.style.cssText = cssText;
 			
