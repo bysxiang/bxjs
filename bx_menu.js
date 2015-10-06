@@ -47,15 +47,15 @@ var BxMenu = (function ()
 			
 			tempDiv.style.cssText = cssText;
 			
-			tempDiv.onclick = function ()
+			tempDiv.onclick = function (event)
 			{
 				that.menu.style.display = "none";
 				ulParent.removeChild(this);//从dom中移除当前节点
+				event.stopPropagation();
 			};
 
 			ulParent.appendChild(tempDiv);
 			that.menu.style.display = "";
-
 			event.stopPropagation();
 		};
 	};
