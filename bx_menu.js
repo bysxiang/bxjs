@@ -52,7 +52,9 @@ var BxMenu = (function ()
 				document.body.removeChild(this); //从dom中移除当前节点
 			};
 
-			document.body.appendChild(tempDiv);
+			var ulParent = ul.parentNode;
+			ulParent.appendChild(tempDiv);
+			//document.body.appendChild(tempDiv);
 			that.menu.style.display = "";
 
 			event.stopPropagation();
