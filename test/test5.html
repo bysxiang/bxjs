@@ -5,7 +5,8 @@
 		<script type="text/javascript" src="../bx_menu.js"></script>
 		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
 		<script type="text/javascript">
-		var b = false;
+			var b = false;
+			var c = false;
 
 			QUnit.test("测试事件冒泡", function (assert)
 			{
@@ -13,16 +14,29 @@
 					menu: document.getElementById("ul") });
 				var element = menuObj.element;
 				element.click();
+
+				
+
 				var shadeDiv = document.getElementById(menuObj.shadeDivId);
 				var menuUl = menuObj.menu;
-				shadeDiv.click();
+				
+				document.getElementById("l1").click();
+				assert.equal(menuUl.style.display, "none", "单击菜单，菜单隐藏");
 
+
+
+				shadeDiv.click();
 				assert.notEqual(b, true, "冒泡事件被阻止");
 			});
 
 			function p1_click()
 			{
 				b = true;
+			}
+
+			function l1_click()
+			{
+				c = true;
 			}
 		</script>
 	</head>
@@ -35,11 +49,12 @@
     	<ol id="qunit-tests"></ol>
     	<div id="qunit-fixture"></div>
 
-    	<div id="p1" onclick="p1_click()">
+    	<div id="p1" onclick="p1_click()" style="position: relative;">
     		<p><input type="button" id="btn" value="菜单按钮" /></p>
-	    	<ul id="ul" style="display:none;">
-	    		<li>中国</li>
-	    		<li>德国</li>
+	    	<ul id="ul" 
+	    		style="display:none; z-index: 100; border-radius: 0.4rem; overflow: hidden;  position: absolute; left: 0.5rem; top: 2rem;">
+	    		<li id="l1" onclick="l1_click();">中国</li>
+	    		<li id="l2">德国</li>
 	    		<li>美帝</li>
 	    	</ul>
     	</div>

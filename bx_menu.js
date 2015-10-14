@@ -38,6 +38,13 @@ var BxMenu = (function ()
 		{
 			var ul = that.menu;
 			var ulParent = ul.parentNode;
+
+			ul.onclick = function (event)
+			{
+				ul.style.display = "none";
+				event.stopPropagation();
+			};
+
 			var tempDiv = document.createElement("div");
 			tempDiv.id = that.shadeDivId;
 			
