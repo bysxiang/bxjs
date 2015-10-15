@@ -39,12 +39,6 @@ var BxMenu = (function ()
 			var ul = that.menu;
 			var ulParent = ul.parentNode;
 
-			ul.onclick = function (event)
-			{
-				ul.style.display = "none";
-				event.stopPropagation();
-			};
-
 			var tempDiv = document.createElement("div");
 			tempDiv.id = that.shadeDivId;
 			
@@ -59,6 +53,13 @@ var BxMenu = (function ()
 				that.menu.style.display = "none";
 				ulParent.removeChild(this);//从dom中移除当前节点
 				event.stopPropagation();
+			};
+
+			ul.onclick = function (event)
+			{
+				ul.style.display = "none";
+				tempDiv.click();
+				event.stopPropagation(); //阻止Ul的事件冒泡
 			};
 
 			ulParent.appendChild(tempDiv);

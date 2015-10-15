@@ -16,7 +16,7 @@
 				element.click();
 
 				assert.notEqual(menuUl.style.display, "none", "ul已显示");
-				assert.equal(shadeDiv, null, "遮罩对象不存在");
+				assert.equal(shadeDiv, null, "遮罩对象单击宿主对象前不存在");
 				//assert.equal();
 			});
 		</script>

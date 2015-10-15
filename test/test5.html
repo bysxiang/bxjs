@@ -15,17 +15,15 @@
 				var element = menuObj.element;
 				element.click();
 
-				
-
 				var shadeDiv = document.getElementById(menuObj.shadeDivId);
 				var menuUl = menuObj.menu;
 				
 				document.getElementById("l1").click();
-				assert.equal(menuUl.style.display, "none", "单击菜单，菜单隐藏");
+				assert.equal(menuUl.style.display, "none", "单击菜单，菜单隐藏"); 
 
+				assert.equal(document.getElementById(menuObj.shadeDivId), null, "单击菜单，遮罩层消失");
 
-
-				shadeDiv.click();
+				//shadeDiv.click();
 				assert.notEqual(b, true, "冒泡事件被阻止");
 			});
 
