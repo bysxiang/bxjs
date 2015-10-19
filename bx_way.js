@@ -8,26 +8,38 @@ var BxWay = (function ()
 		fill();
 	};
 
+	//对绑定的元素的绑定onkeyup事件
 	function bind()
 	{
 		var nodeList = document.querySelectorAll("[bx-data]");
 		for (var i = 0; i < nodeList.length; i++)
 		{
 			var item = nodeList[i];
-			item.onkeyup = function (event)
-			{
-				var val = this.value;
-				eval(item.getAttribute("bx-data") + "=" + " '" + val + "'");
-				fill();
-			};
+			item.onkeyup = update_val;
+			item.onchange = update_val;
 		}
-
-		
 	}
 
-	function fill()
+	function update_val(event)
 	{
-		var nodeList = document.querySelectorAll("[bx-data]");
+		var val = this.value;
+		eval(this.getAttribute("bx-data") + "=" + " '" + val + "'");
+		fill(this.getAttribute("bx-data"));
+	}
+
+	//重新填充绑定的值，
+	//objStr即元素绑定的绑定的变量字符串
+	function fill(objStr)
+	{
+		if (objStr)
+		{
+			var nodeList = document.querySelectorAll("[bx-data='" + objStr + "']");
+		}
+		else
+		{
+			var nodeList = document.querySelectorAll("[bx-data]");
+		}
+		
 		for (var i = 0; i < nodeList.length; i++)
 		{
 			var item = nodeList[i];
