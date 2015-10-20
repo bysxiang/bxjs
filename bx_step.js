@@ -3,30 +3,50 @@
 var BxStep = (function () {
 	//构造函数
 	//elementsArr，代表各个层对象，
-	var bxStep = function (elementsArr)
+	var bxStep = function (elementsArr, str)
 	{
 		this.elements = elementsArr; 
+		var _events = { "showIndexChanged": null };
+		
+		this.getEvents = function ()
+		{
+			return _events;
+		};
+
+		this.addEvent = function (type, callback)
+		{
+			_events[type] = callback;
+		};
+
+		this.removeEvent = function (type)
+		{
+			_events[type] = null;
+		};
 	};
 
 	//显示指定的对象层，如果没有找到，会抛出Error异常
 	bxStep.prototype.showIndex = function(index)
 	{
-		if (this.elements[index])
+		//如果index存在，隐藏其他的元素
+		if (this.elements[index] && this.getShowIndex() != index)
 		{
 			this.elements[index].style.display = "";
+			for (var i = 0; i < this.elements.length; i++)
+			{
+				if (i != index && this.elements[i])
+				{
+					this.elements[i].style.display = "none";
+				}
+			}
+			trigger("showIndexChanged", this.getEvents());
+		}
+		else if (this.elements[index] && this.getShowIndex() == index)
+		{
+			return false;
 		}
 		else
 		{
 			throw new Error("没有那个元素");
-		}
-
-		//如果index存在，隐藏其他的元素
-		for (var i = 0; i < this.elements.length; i++)
-		{
-			if (i != index && this.elements[i])
-			{
-				this.elements[i].style.display = "none";
-			}
 		}
 	};
 
@@ -140,7 +160,19 @@ var BxStep = (function () {
 		}
 	};
 
+	//事件相关的部分
+
+	function trigger(type, events)
+	{
+		if (events[type])
+		{
+			events[type]();
+		}
+	}
+
 	//替换对象，放到下一版
+
+
 
 	return bxStep;
 })();
