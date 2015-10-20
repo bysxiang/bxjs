@@ -15,16 +15,40 @@ var BxWay = (function ()
 		for (var i = 0; i < nodeList.length; i++)
 		{
 			var item = nodeList[i];
-			item.onkeyup = update_val;
+
+			//绑定keyup事件
+			var oldKeyupEvent = this.onkeyup;
+			item.onkeyup = function (event)
+			{
+				if (typeof (oldKeyupEvent)  == "function")
+				{
+					oldKeyupEvent(event);
+				}
+				var val = this.value;
+				eval(this.getAttribute("bx-data") + "=" + " '" + val + "'");
+				fill(this.getAttribute("bx-data"));
+			};
+
+			//绑定change事件
+			var oldChange = this.onchange;
+			item.onchange = function (event)
+			{
+				if (typeof(oldChange) == "function")
+				{
+					oldChange(event);
+				}
+				var val = this.value;
+				eval(this.getAttribute("bx-data") + "=" + " '" + val + "'");
+				fill(this.getAttribute("bx-data"));
+			};
+
 			item.onchange = update_val;
 		}
 	}
 
 	function update_val(event)
 	{
-		var val = this.value;
-		eval(this.getAttribute("bx-data") + "=" + " '" + val + "'");
-		fill(this.getAttribute("bx-data"));
+		
 	}
 
 	//重新填充绑定的值，
