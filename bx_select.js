@@ -69,11 +69,6 @@ var BxSelect = (function()
 			that.divWrapper.style.display = "";
 			that.inputTxt.focus();
 		});
-
-		that.element.addEventListener("keyup", function (event)
-		{
-
-		});
 		
 		//处理列表项选择事件
 		that.ul.addEventListener("click", function (event)
@@ -82,7 +77,7 @@ var BxSelect = (function()
 			{
 				that.element.value = event.target.innerHTML;
 				that.element.setAttribute("data-bx-value", event.target.getAttribute("data-bx-value"));
-				if (that.success && typeof(that.success == "function")
+				if (that.success && typeof(that.success == "function"))
 				{
 					that.success({text: event.target.innerHTML, value: event.target.getAttribute("data-bx-value")});
 				}
@@ -101,6 +96,12 @@ var BxSelect = (function()
 			//指定time事件后向ajax请求数据
 			if (that.ajax && typeof(that.ajax) == "object" && event.target.value)
 			{
+				//处理data
+				var data = (that.ajax.data && typeof( that.ajax.data) == "function") ? 
+					that.ajax.data(event.target.value) : null;
+				var type = that.ajax.type || "get";
+				var url = that.ajax.url;
+
 				var xhr = new XMLHttpRequest();
 				//处理ajax返回的数据
 				xhr.onreadystatechange = function ()
@@ -113,20 +114,23 @@ var BxSelect = (function()
 							{
 								var data = that.ajax.success(xhr.responseText);
 								that.fillData(data);
+								if (that.ajax.closeLoadingFun && typeof(that.ajax.closeLoadingFun) == "function")
+								{
+									that.ajax.closeLoadingFun();
+								}
 							}
 						}
 						else
 						{
+							if (that.ajax.closeLoadingFun && typeof(that.ajax.closeLoadingFun) == "function")
+							{
+								that.ajax.closeLoadingFun();
+							}
 							that.ajax.error(xhr.responseText);
 						}
 					}
 				};
 
-				//处理data
-				var data = (that.ajax.data && typeof( that.ajax.data) == "function") ? 
-					that.ajax.data(event.target.value) : null;
-				var type = that.ajax.type || "get";
-				var url = that.ajax.url;
 				if (data)
 				{
 					for (var p in data)
@@ -137,6 +141,10 @@ var BxSelect = (function()
 				
 				xhr.open(type, url, true);
 				xhr.send(null);
+				if (that.ajax.loadingFun && typeof(that.ajax.loadingFun) == "function")
+				{
+					that.ajax.loadingFun();
+				}
 			}
 					
 		});
