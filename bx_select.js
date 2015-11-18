@@ -5,7 +5,6 @@ var BxSelect = (function()
 	var bxSelect = function (config)
 	{
 		this.element = config.element;
-		this.time = config.time || 1000;
 		this.zIndex = config.zIndex || 50;
 		if (!config.ajax)
 		{
