@@ -7,8 +7,18 @@ var BxSelect = (function()
 		this.element = config.element;
 		this.time = config.time || 1000;
 		this.zIndex = config.zIndex || 50;
-		this.data = config.data || [];
+		if (!config.ajax)
+		{
+			this.data = config.data || [];
+		}
+		else
+		{
+			this.data = [];
+		}
 		this.ajax = config.ajax;
+		
+		this.selectedIndex = config.selectedIndex;
+		this.selectedChanged = config.selectedChanged;
 
 		var width = document.documentElement.clientWidth;
 
@@ -31,11 +41,16 @@ var BxSelect = (function()
 		this.inputTxt.type = "text";
 		inputDiv.appendChild(this.inputTxt);
 
+		this.inputSearch = document.createElement("input");
+		this.inputSearch.type = "button";
+		this.inputSearch.value = "搜索";
+		inputDiv.appendChild(this.inputSearch);
+
 		document.body.appendChild(this.divWrapper);
 
 		var targetLeft = this.inputTxt.offsetLeft;
 		var targetTop = this.inputTxt.offsetTop;
-		var targetWidth = this.inputTxt.offsetWidth;
+		var targetWidth = this.inputTxt.clientWidth;
 		var targetHeight = this.inputTxt.offsetHeight;
 
 		this.listDiv = document.createElement("div");
@@ -53,9 +68,9 @@ var BxSelect = (function()
 		this.listDiv.appendChild(this.ul);
 
 		this.doingEvents();
-		if (!this.ajax)
+		if (!config.ajax)
 		{
-			this.fillData(this.data);
+			renderSelect(this, this.data);
 		}
 	}
 
@@ -68,6 +83,7 @@ var BxSelect = (function()
 		{
 			that.divWrapper.style.display = "";
 			that.inputTxt.focus();
+			renderSelect(that, that.data);
 		});
 		
 		//处理列表项选择事件
@@ -75,11 +91,21 @@ var BxSelect = (function()
 		{
 			if (event.target !== event.currentTarget)
 			{
+				var oldText = that.element.value;
+				var oldValue = that.element.getAttribute("data-bx-value");
+
 				that.element.value = event.target.innerHTML;
 				that.element.setAttribute("data-bx-value", event.target.getAttribute("data-bx-value"));
-				if (that.success && typeof(that.success == "function"))
+
+				if (that.selectedIndex && typeof(that.selectedIndex == "function"))
 				{
-					that.success({text: event.target.innerHTML, value: event.target.getAttribute("data-bx-value")});
+					that.selectedIndex({text: event.target.innerHTML, value: event.target.getAttribute("data-bx-value")});
+				}
+
+				if ( event.target.getAttribute("data-bx-value") != oldValue 
+					&& that.selectedChanged && typeof(that.selectedChanged) == "function" )
+				{
+					that.selectedChanged({text: event.target.innerHTML, value: event.target.getAttribute("data-bx-value")});
 				}
 			}
 			that.divWrapper.style.display = "none";
@@ -91,14 +117,13 @@ var BxSelect = (function()
 			that.divWrapper.style.display = "none";
 		});
 
-		that.inputTxt.addEventListener("change", function (event)
+		that.inputSearch.addEventListener("click", function (event)
 		{
-			//指定time事件后向ajax请求数据
-			if (that.ajax && typeof(that.ajax) == "object" && event.target.value)
+			if (that.ajax && typeof(that.ajax) == "object")
 			{
 				//处理data
 				var data = (that.ajax.data && typeof( that.ajax.data) == "function") ? 
-					that.ajax.data(event.target.value) : null;
+					that.ajax.data(that.inputTxt.value) : null;
 				var type = that.ajax.type || "get";
 				var url = that.ajax.url;
 
@@ -110,23 +135,25 @@ var BxSelect = (function()
 					{
 						if (xhr.status == 200)
 						{
-							if (that.ajax.dataType == "json")
+							var data = that.ajax.results(parseContent(xhr, that.ajax.dataType));
+
+							//如果是ajax动态检索，则每次重新复制对象的data
+							that.data = data;
+							renderSelect(that, data);
+							// 执行填充完数据的回调
+							if (that.ajax.fillClose && typeof(that.ajax.fillClose) == "function")
 							{
-								var data = that.ajax.success(xhr.responseText);
-								that.fillData(data);
-								if (that.ajax.closeLoadingFun && typeof(that.ajax.closeLoadingFun) == "function")
-								{
-									that.ajax.closeLoadingFun();
-								}
+								that.ajax.fillClose();
 							}
 						}
 						else
 						{
-							if (that.ajax.closeLoadingFun && typeof(that.ajax.closeLoadingFun) == "function")
+							// 执行填充完数据的回调
+							if (that.ajax.fillClose && typeof(that.ajax.fillClose) == "function")
 							{
-								that.ajax.closeLoadingFun();
+								that.ajax.fillClose();
 							}
-							that.ajax.error(xhr.responseText);
+							that.ajax.error();
 						}
 					}
 				};
@@ -140,16 +167,28 @@ var BxSelect = (function()
 				}
 				
 				xhr.open(type, url, true);
-				xhr.send(null);
-				if (that.ajax.loadingFun && typeof(that.ajax.loadingFun) == "function")
+				if (that.ajax.beforeSend && typeof(that.ajax.beforeSend) == "function")
 				{
-					that.ajax.loadingFun();
+					that.ajax.beforeSend();
+				}
+
+				xhr.send(null);
+			}
+			else
+			{
+				var data = [];
+				for (var i = 0; i < that.data.length; i++)
+				{
+					if (that.data[i].text && that.data[i].text.indexOf(that.inputTxt.value) != -1)
+					{
+						data.push(that.data[i]);
+					}
 				}
 			}
-					
 		});
 	};
 
+	//对url添加查询字符串
 	function addURLParam(url, name, value)
 	{
 		url += (url.indexOf("?") == -1 ? "?" : "&");
@@ -158,25 +197,51 @@ var BxSelect = (function()
 		return url;
 	}
 
-	bxSelect.prototype.fillData = function (data)
+	// 解析不同的内容类型
+	// 只解析html, XML, json
+	// 默认为html
+	function parseContent(xhr, type)
 	{
-		this.data = data;
-		while (this.ul.hasChildNodes())
+		var result = null;
+
+		switch (type)
 		{
-			this.ul.removeChild(this.ul.firstChild);
+			case "json":
+				result = JSON.parse(xhr.responseText);
+				break;
+			case "xml":
+				result = xhr.responseXML;
+				break;
+			default:
+				result = xhr.responseText;
+				break;
 		}
 
-		for (var i = 0; i < this.data.length; i++)
+		return result;
+	}
+
+	function renderSelect(thatObj, data)
+	{
+		while (thatObj.ul.hasChildNodes())
 		{
-			var li = document.createElement("li");
-
-			li.setAttribute("data-bx-value", this.data[i].value);
-			li.innerHTML = this.data[i].text;
-
-			this.ul.appendChild(li);
+			thatObj.ul.removeChild(thatObj.ul.firstChild);
 		}
-		this.listDiv.style.display = "";
-	};
+
+		if (data.length > 0)
+		{
+			for (var i = 0; i < data.length; i++)
+			{
+				var li = document.createElement("li");
+
+				li.setAttribute("data-bx-value", data[i].value);
+				li.innerHTML = data[i].text;
+
+				thatObj.ul.appendChild(li);
+			}
+			thatObj.listDiv.style.display = "";
+		}
+		
+	}
 
 	return bxSelect;
 })();

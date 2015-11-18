@@ -8,6 +8,12 @@
 	background: white;
 }
 
+.bx-select-wrapper *
+{
+	margin: 0;
+	padding: 0;
+}
+
 .bx-select-input
 {
 }
@@ -26,7 +32,7 @@
 	position: absolute;
 	max-height: 40%;
 	overflow: auto;
-	border: 1px solid #ccc;
+	border: 2px solid #ccc;
 }
 
 .bx-select-list ul, li 
