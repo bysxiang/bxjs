@@ -1,5 +1,6 @@
 "use strict";
 
+"version: 0.0.1";
 var BxSelect = (function()
 {
 	var bxSelect = function (config)
