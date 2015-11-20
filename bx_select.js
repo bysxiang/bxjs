@@ -19,6 +19,8 @@ var BxSelect = (function()
 		
 		this.selectedIndex = config.selectedIndex;
 		this.selectedChanged = config.selectedChanged;
+		//对宿主元素设置默认的bx-data-value为空字符串
+		this.element.setAttribute("bx-data-value", "");
 
 		var width = document.documentElement.clientWidth;
 

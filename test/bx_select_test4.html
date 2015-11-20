@@ -32,44 +32,17 @@
 			      win.addEventListener(resizeEvt, recalc, false);
 			      doc.addEventListener('DOMContentLoaded', recalc, false);
 		  	})(document, window);
-
-			QUnit.asyncTest("测试select组件2", function (assert)
+			  
+			QUnit.test("测试select组件4", function (assert)
 			{
 				var bxSelect = new BxSelect({
-					element: document.getElementById("inputx"),
-					ajax: {
-						url: "http://m.weather.com.cn/atad/101190101.html",
-						type: "get",
-						dataType: "json",
-						beforeSend: function ()
-						{
-							alert("开始了");
-						},
-						results: function (json)
-						{
-							return [
-								 { text: "java", value: "1" },
-								 { text: "c#", value: "2" },
-								 { text: "ruby", value: "3" }
-								]; 
-						},
-						error: function ()
-						{
-							alert("请求失败");
-						},
-						fillClose: function ()
-						{
-							alert("结束了");
-						}
-					}
+					element: document.getElementById("inputx")
 					
 				});
 				
-				
-
-				
-
+				assert.equal(document.getElementById("inputx").getAttribute("bx-data-value"), "", "默认值为空值");
 			});
+
 				
 		</script>
 	</head>
