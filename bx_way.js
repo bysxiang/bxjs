@@ -17,7 +17,7 @@ var BxWay = (function ()
 			var item = nodeList[i];
 
 			//绑定keyup事件
-			var oldKeyupEvent = this.onkeyup;
+			var oldKeyupEvent = item.onkeyup;
 			item.onkeyup = function (event)
 			{
 				if (typeof (oldKeyupEvent)  == "function")
@@ -30,7 +30,7 @@ var BxWay = (function ()
 			};
 
 			//绑定change事件
-			var oldChange = this.onchange;
+			var oldChange = item.onchange;
 			item.onchange = function (event)
 			{
 				if (typeof(oldChange) == "function")
@@ -41,8 +41,6 @@ var BxWay = (function ()
 				eval(this.getAttribute("bx-data") + "=" + " '" + val + "'");
 				fill(this.getAttribute("bx-data"));
 			};
-
-			item.onchange = update_val;
 		}
 	}
 

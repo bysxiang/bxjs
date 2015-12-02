@@ -8,41 +8,28 @@
 			"use strict";
 			var obj = { name: "java2", age: 13 };
 
-			// QUnit.test("测试双向绑定", function (assert)
-			// {
-			// 	new BxWay();
-
-			// 	assert.equal(document.getElementById("btn").value, obj.name, "第一个绑定值等于obj.name值");
-			// 	assert.equal(document.getElementById("btn4").value, document.getElementById("btn").value, "绑定相同对象变量字符串的相同");
-			// 	assert.equal(document.getElementById("btn3").value, "", "绑定无效值, value为null");
-
-			// 	var btn = document.getElementById("btn");
-			// 	btn.onkeyup = function (event)
-			// 	{
-			// 		this.value = "bb";
-			// 		assert.equal(btn.value, obj.name, "修改btn的value值，obj.name也一同被修改");
-			// 		assert.equal(document.getElementById("btn4").value, "bb", "btn4也以因为btn value值的修改一同被修改");
-			// 	};
-			// 	btn.keyup();
-				
-			// });
-
-			function ff()
+			QUnit.test("测试双向绑定", function (assert)
 			{
-				var btns = document.getElementById("btns");
+				new BxWay();
 
-				var event = new MouseEvent('click', {
-				    'view': window,
-				    'bubbles': true,
-				    'cancelable': true
-				  });
-				btns.dispatchEvent(event);
-				//btns.value = "hehe";
+				assert.equal(document.getElementById("btn").value, obj.name, "第一个绑定值等于obj.name值");
+				assert.equal(document.getElementById("btn4").value, document.getElementById("btn").value, "绑定相同对象变量字符串的相同");
+				assert.equal(document.getElementById("btn3").value, "", "绑定无效值, value为null");
+
+				var btn4 = document.getElementById("btn4");
+	
+				assert.equal(btn4.value, obj.name, "修改btn的value值，obj.name也一同被修改");
+				//assert.equal(document.getElementById("btn4").value, "bb", "btn4也以因为btn value值的修改一同被修改");
+			});
+
+			function f2()
+			{
+				event.target.value += "bb";
 			}
 		</script>
 	</head>
 
-	<body onload="ff()">
+	<body>
 		<h1 id="qunit-header">QUnit测试</h1>
     	<h2 id="qunit-banner"></h2>
     	<div id="qunit-testrunner-toolbar"></div>
@@ -57,9 +44,9 @@
 		<br/>
 
 		<p>
-		<input type="text" id="btn4" bx-data="obj.name" />
+		<input type="text" id="btn4" bx-data="obj.name" onkeyup="f2()" />
 		</p>
 
-		<input type="button" id="btns" onclick="alert(123);" />
+		
 	</body>
 </html>
