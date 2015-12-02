@@ -1,0 +1,48 @@
+.bx-select-wrapper
+{
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: white;
+}
+
+.bx-select-wrapper *
+{
+	margin: 0;
+	padding: 0;
+}
+
+.bx-select-input
+{
+}
+
+.bx-select-input input
+{
+	line-height: 1.3rem;
+	height: 1.3rem;
+	margin: 0.5rem;
+	min-width: 2rem;
+
+}
+
+.bx-select-list
+{
+	position: absolute;
+	max-height: 40%;
+	overflow: auto;
+	border: 2px solid #ccc;
+}
+
+.bx-select-list ul, li 
+{
+	list-style: none;
+}
+
+.bx-select-list li
+{
+	font-size: 80%;
+	padding: 5px;
+	border: 1px solid #dedede;
+}

@@ -1,0 +1,95 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="../lib/qunit-1.19.0.js"></script>
+		<script type="text/javascript" src="../bx_select.js"></script>
+		<meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0,user-scalable=0">
+		<link rel="stylesheet" href="../css/bx_select.css" />
+		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
+
+		<script type="text/javascript">
+			(function (doc, win) 
+  			{
+			      var docEl = doc.documentElement,
+			      resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+			      recalc = function () 
+			      {
+			        var clientWidth = docEl.clientWidth;
+			        if (!clientWidth) 
+			        {
+
+			          return;
+			        }
+
+			        docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+			      };
+
+			      if (!doc.addEventListener) 
+			      {
+			          return;
+			      }
+			        
+			      win.addEventListener(resizeEvt, recalc, false);
+			      doc.addEventListener('DOMContentLoaded', recalc, false);
+		  	})(document, window);
+
+			QUnit.test("测试select组件2", function (assert)
+			{
+				var bxSelect = new BxSelect({
+					element: document.getElementById("inputx"),
+					data: function () { 
+						return [
+						 { text: "java", value: "1" },
+						 { text: "c#", value: "2" },
+						 { text: "ruby", value: "3" }
+						] 
+					},
+					selectedChanged: function (item) //在这里测试选择事件
+					{
+						alert("改变了");
+					}
+				});
+
+				var targetInput = document.getElementById("inputx");
+				targetInput.addEventListener("focus", function (event)
+				{
+					var wrapperDiv = document.querySelector("div.bx-select-wrapper");
+					assert.notEqual(wrapperDiv.style.display, "none", "wrapperDiv不是隐藏状态");
+				});
+				targetInput.focus();
+
+				var lis = document.querySelectorAll("ul.bx-select-ul li");
+				assert.equal(lis.length, bxSelect.data.length, "li的个数与传递的长度相同");
+				var b = true;
+				for (var i = 0; i < lis.length; i++)
+				{
+					if (lis[i].innerHTML == bxSelect.data[i].text && lis[i].getAttribute("data-bx-value") == bxSelect.data[i].value)
+					{
+						b = true;
+					}
+					else
+					{
+						b = false;
+						break;
+					}
+				}
+				assert.equal(b, true, "填充的li与传递的数据一致");
+
+				
+			});
+				
+		</script>
+	</head>
+
+	<body>
+		<h1 id="qunit-header">QUnit测试</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture"></div>
+
+		<input type="text" id="inputx" />
+
+	</body>
+</html>
