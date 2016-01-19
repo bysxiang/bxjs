@@ -1,0 +1,31 @@
+ul, li { list-style: none; }
+
+.bx-select-wrapper input
+{
+	width: 50px;
+}
+
+.bx-select-wrapper *
+{
+	margin: 0;
+	padding: 0;
+	word-break: break-all;
+}
+
+.bx-select-list
+{
+	position: absolute;
+	max-height: 40%;
+	overflow: auto;
+	border: 2px solid #ccc;
+}
+
+.bx-select-list ul { list-style: none; width: 100%; margin: 0; -webkit-padding-start: 0; }
+
+.bx-select-list li { list-style: none; word-break: break-all; }
+
+.bx-select-list li
+{
+	padding: 5px;
+	border: 1px solid #dedede;
+}

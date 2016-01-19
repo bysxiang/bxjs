@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="../bx_select_pc.js"></script>
+		<link rel="stylesheet" href="../css/bx_select_pc.css" />
+		<script type="text/javascript">
+			
+			// body load
+			function b_load()
+			{
+				var bxSelect = new BxSelect({
+					element: document.getElementById("inputx"),
+					data: function () { 
+						return [
+						 { text: "javadshfdshfdsfdshkfhdskfhds", value: "1" },
+						 { text: "c#", value: "2" },
+						 { text: "ruby", value: "3" }
+						] 
+					}(),
+					search: function (searchStr)
+					{
+						return [{ text: "jjj", value: "0" }];
+					},
+					selectedIndex: function (item) //在这里测试选择事件
+					{
+						alert(item.text + " = jjj");
+						//assert.equal(item.text, "jjj", "单击的是jjj");
+					}
+				});
+
+				var targetInput = document.getElementById("inputx");
+				targetInput.addEventListener("focus", function (event)
+				{
+					var wrapperDiv = document.querySelector("div.bx-select-wrapper");
+					//assert.notEqual(wrapperDiv.style.display, "none", "wrapperDiv不是隐藏状态");
+				});
+				//targetInput.focus();
+
+				// var lis = document.querySelectorAll("ul.bx-select-ul li");
+				// assert.equal(lis.length, bxSelect.data.length, "li的个数与传递的长度相同");
+				// var b = true;
+				// for (var i = 0; i < lis.length; i++)
+				// {
+				// 	if (lis[i].innerHTML == bxSelect.data[i].text && lis[i].getAttribute("data-bx-value") == bxSelect.data[i].value)
+				// 	{
+				// 		b = true;
+				// 	}
+				// 	else
+				// 	{
+				// 		b = false;
+				// 		break;
+				// 	}
+				// }
+				// assert.equal(b, true, "填充的li与传递的数据一致");
+
+				// //下面的代码测试自定义搜素
+
+				// bxSelect.inputTxt.value="aaa";
+				// bxSelect.inputSearch.click();
+				
+				// var lis = document.querySelectorAll("ul.bx-select-ul li");	
+				// assert.equal(lis.length, 1, "只有一个结果");
+				// if (lis[0].innerHTML == "jjj" && lis[0].getAttribute("data-bx-value"))
+				// {
+				// 	assert.ok(true, "搜索结果匹配");
+				// }
+				// else
+				// {
+				// 	assert.ok(false, "搜索结果不匹配");
+				// }
+				// lis[0].click();
+			}
+			
+		</script>
+	</head>
+
+	<body onload="b_load()">
+		
+
+		<input type="text" id="inputx" style="width: 200px;" />
+
+	</body>
+</html>
