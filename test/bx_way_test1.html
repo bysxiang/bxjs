@@ -1,0 +1,52 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="../lib/qunit-1.19.0.js"></script>
+		<script type="text/javascript" src="../bx_way.js"></script>
+		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
+		<script type="text/javascript">
+			"use strict";
+			var obj = { name: "java2", age: 13 };
+
+			QUnit.test("测试双向绑定", function (assert)
+			{
+				new BxWay();
+
+				assert.equal(document.getElementById("btn").value, obj.name, "第一个绑定值等于obj.name值");
+				assert.equal(document.getElementById("btn4").value, document.getElementById("btn").value, "绑定相同对象变量字符串的相同");
+				assert.equal(document.getElementById("btn3").value, "", "绑定无效值, value为null");
+
+				var btn4 = document.getElementById("btn4");
+	
+				assert.equal(btn4.value, obj.name, "修改btn的value值，obj.name也一同被修改");
+				//assert.equal(document.getElementById("btn4").value, "bb", "btn4也以因为btn value值的修改一同被修改");
+			});
+
+			function f2()
+			{
+				event.target.value += "bb";
+			}
+		</script>
+	</head>
+
+	<body>
+		<h1 id="qunit-header">QUnit测试</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture"></div>
+
+		<p>姓名：<input type="text" id="btn" bx-data="obj.name" /></p>
+		<p>年龄：<input type="text" id="btn2" bx-data="obj.age" /></p>
+		<p>哈哈：<input type="text" id="btn3" bx-data="obj.hh" /></p>
+
+		<br/>
+
+		<p>
+		<input type="text" id="btn4" bx-data="obj.name" onkeyup="f2()" />
+		</p>
+
+		
+	</body>
+</html>
