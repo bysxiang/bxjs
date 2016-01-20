@@ -28,7 +28,8 @@
 					selectedData: [ { text: "c#", value: "2" }],
 					selectedChanged: function (changed)
 					{
-						deepEqual(changed.newItem, { text: "c#", value: "2" }, "匹配");
+						assert.equal(changed.type, "delete", "变化的类型为delete");
+						deepEqual(changed.changedItem, { text: "c#", value: "2" }, "匹配");
 						
 					}
 				});

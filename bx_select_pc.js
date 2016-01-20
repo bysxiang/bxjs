@@ -33,12 +33,6 @@ var BxSelect = (function()
 
 		this.element.style.display = "none";
 
-		//输出log
-		console.log("targetLeft: " + targetLeft);
-		console.log("targetTop: " + targetTop);
-		console.log("targetWidth: " + targetWidth);
-		console.log("targetHeight: " + targetHeight);
-
 		//设置divWrapper为绝对定位
 		this.divWrapper = document.createElement("div");
 		this.divWrapper.className = "bx-select-wrapper";
@@ -136,7 +130,8 @@ var BxSelect = (function()
 					appendItem(that, { text: text, value: value });
 					//触发selectedChanged事件
 					that.selectedChanged({
-						newItem: { text: text, value: value }
+						type: "add",
+						changedItem: { text: text, value: value }
 					});
 				}
 			}
@@ -327,8 +322,9 @@ var BxSelect = (function()
 				thatObj.element.setAttribute("data-bx-value", thatObj.bxValue.join(","));
 				event.currentTarget.parentNode.remove();
 				// 触发selectedChanged事件
-				thatObj.selectedChanged({ 
-					newItem: { text: text, value: value }					
+				thatObj.selectedChanged({
+					type: "delete",
+					changedItem: { text: text, value: value }			
 				});
 			}		
 		});	

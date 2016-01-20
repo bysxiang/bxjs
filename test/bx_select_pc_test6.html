@@ -28,7 +28,8 @@
 					//selectedData: [ { text: "c#", value: "2" }, { text: "ruby", value: "3" }],
 					selectedChanged: function (changed)
 					{
-						deepEqual(changed.newItem, { text: "javadshfdshfdsfdshkfhdskfhds", value: "1" }, "匹配");
+						assert.equal(changed.type, "add", "变化类型为add");
+						deepEqual(changed.changedItem, { text: "javadshfdshfdsfdshkfhdskfhds", value: "1" }, "匹配");
 						
 					}
 				});
