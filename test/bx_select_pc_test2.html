@@ -27,6 +27,10 @@
 						url: "http://192.168.1.89:3000/home/hello_test",
 						type: "get",
 						dataType: 'json',
+						data: function (term)
+						{
+							return { q: term };
+						},
 						beforeSend: function ()
 						{
 							before = true;
@@ -41,17 +45,23 @@
 						{
 							//alert("请求失败");
 						},
-						fillClose: function ()
+						fillClose: function (obj)
 						{
 							end = true;
 							assert.ok(end, "正常触发fillClose");
 
+							for (var i = 0; i < remoteData.length; i++)
+							{
+								remoteData[i].text += obj.lastInput.value; 
+							}
+
 							var equalResult = false;
 							for (var i = 0; i < bxSelect.data.length; i++)
 							{
-								equalResult = (bxSelect.data[i].text == data[i].text && bxSelect.data[i].value == data[i].value);
+								equalResult = (bxSelect.data[i].text == remoteData[i].text &&
+								 bxSelect.data[i].value == remoteData[i].value);
 							}
-							assert.equal(equalResult, false, "数据匹配");
+							assert.equal(equalResult, true, "数据匹配");
 						}
 
 					}
@@ -71,7 +81,7 @@
 				assert.ok(equalResult, "数据匹配");
 
 				//当执行了搜索，并检索到数据后，会用ajax的数据替换当前的数据
-				bxSelect.lastInput.value = "";
+				bxSelect.lastInput.value = "33";
 				var event = createEvent(13, 13);
 				bxSelect.lastInput.dispatchEvent(event);
 				// 由于ajax是异步的，所以以下代码在bxSelect，ajax: end中进行验证。

@@ -155,7 +155,7 @@ var BxSelect = (function()
 				{
 					//处理data
 					var data = (that.ajax.data && typeof( that.ajax.data) == "function") ? 
-						that.ajax.data(that.element.value) : null;
+						that.ajax.data(that.lastInput.value) : null;
 					var type = that.ajax.type || "get";
 					var url = that.ajax.url;
 
@@ -175,7 +175,7 @@ var BxSelect = (function()
 								// 执行填充完数据的回调
 								if (that.ajax.fillClose && typeof(that.ajax.fillClose) == "function")
 								{
-									that.ajax.fillClose();
+									that.ajax.fillClose(that);
 								}
 							}
 							else
@@ -183,7 +183,7 @@ var BxSelect = (function()
 								// 执行填充完数据的回调
 								if (that.ajax.fillClose && typeof(that.ajax.fillClose) == "function")
 								{
-									that.ajax.fillClose();
+									that.ajax.fillClose(that);
 								}
 								that.ajax.error();
 							}
