@@ -88,6 +88,15 @@ var BxSelect = (function()
 		this.doingEvents();
 
 		renderSelect(this, this.data);
+		
+		//初始化selectedData，默认选中的项
+		if (config.selectedData && config.selectedData.length > 0)
+		{
+			for (var i = 0; i < config.selectedData.length; i++)
+			{
+				appendItem(this, config.selectedData[i]);
+			}
+		}
 	}
 
 	//处理事件
@@ -123,9 +132,6 @@ var BxSelect = (function()
 				//如果当前单击的项没有被选择，则添加。
 				if (that.bxValue.indexOf(value) == -1)
 				{
-					that.bxValue.push(value);
-					that.bxText.push(text);
-
 					that.element.setAttribute("data-bx-value", that.bxValue.join(","));// 对宿主元素进行赋值
 
 					appendItem(that, { text: text, value: value });
@@ -293,6 +299,11 @@ var BxSelect = (function()
 	// 追加一个选项
 	function appendItem (thatObj, obj)
 	{
+		thatObj.bxValue.push(obj.value);
+		thatObj.bxText.push(obj.text);
+		thatObj.element.setAttribute("data-bx-value", thatObj.bxValue.join(","));// 对宿主元素进行赋值
+		
+		
 		var li = document.createElement("li");
 		var liCss = "padding: 3px 5px 3px 5px; margin: 3px 0 3px 5px; position: relative; line-height: 13px; color: #333; cursor: default; border: 1px solid #aaaaaa;"
 			+ "border-radius: 3px; background-color: #e4e4e4; max-width: 100px;";
