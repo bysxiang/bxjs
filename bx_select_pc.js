@@ -20,7 +20,6 @@ var BxSelect = (function()
 		this.bxValue = [];
 		this.bxText = [];
 		
-		this.selectedIndex = config.selectedIndex;
 		this.selectedChanged = config.selectedChanged;
 		//对宿主元素设置默认的bx-data-value为空字符串
 		this.element.setAttribute("bx-data-value", "");
@@ -135,20 +134,11 @@ var BxSelect = (function()
 					that.element.setAttribute("data-bx-value", that.bxValue.join(","));// 对宿主元素进行赋值
 
 					appendItem(that, { text: text, value: value });
+					//触发selectedChanged事件
+					that.selectedChanged({
+						newItem: { text: text, value: value }
+					});
 				}
-
-				//that.element.setAttribute("data-bx-value", event.target.getAttribute("data-bx-value"));
-
-				// if (that.selectedIndex && typeof(that.selectedIndex == "function"))
-				// {
-				// 	that.selectedIndex({text: event.target.innerHTML, value: event.target.getAttribute("data-bx-value")});
-				// }
-
-				// if ( event.target.getAttribute("data-bx-value") != oldValue 
-				// 	&& that.selectedChanged && typeof(that.selectedChanged) == "function" )
-				// {
-				// 	that.selectedChanged({text: event.target.innerHTML, value: event.target.getAttribute("data-bx-value")});
-				// }
 			}
 			that.listDiv.style.display = "none";
 		});
@@ -297,6 +287,8 @@ var BxSelect = (function()
 	}
 
 	// 追加一个选项
+	// param thatObj bxSelect对象
+	// obj 添加的项元素{ text: .., value: .. }
 	function appendItem (thatObj, obj)
 	{
 		thatObj.bxValue.push(obj.value);
@@ -326,11 +318,18 @@ var BxSelect = (function()
 			var index = thatObj.bxValue.indexOf(obj.value);
 			if (index != -1)
 			{
+				var text = thatObj.bxText[index];
+				var value = thatObj.bxValue[index];
+				
 				thatObj.bxValue.splice(index, 1);
 				thatObj.bxText.splice(index, 1);
 
 				thatObj.element.setAttribute("data-bx-value", thatObj.bxValue.join(","));
 				event.currentTarget.parentNode.remove();
+				// 触发selectedChanged事件
+				thatObj.selectedChanged({ 
+					newItem: { text: text, value: value }					
+				});
 			}		
 		});	
 
