@@ -34,6 +34,30 @@
 					var wrapperDiv = document.querySelector("div.bx-select-wrapper");
 					//assert.notEqual(wrapperDiv.style.display, "none", "wrapperDiv不是隐藏状态");
 				});
+
+				//测试搜索功能
+				bxSelect.lastInput.value = "java";
+				if (document.implementation.hasFeature("KeyboardEvents", "3.0"))
+				{
+					var event = document.createEvent("Events");
+					event.initEvent("keyup", true, true);
+					event.view = document.defaultView;
+					event.altKey = false;
+					event.ctrlKey = false;
+					event.shiftKey = false;
+					event.metaKey = false;
+					event.keyCode = 13;
+					event.charCode = 13;
+
+					
+
+					//初始化事件对象
+					//event.initKeyboardEvent("keyup", true, true, document.defaultView, "Enter", 1, "", 1);
+					bxSelect.lastInput.dispatchEvent(event);
+
+					var searchResultLis = document.querySelectorAll("ul.bx-select-ul li");
+					//assert.equal(searchResultLis.length, 1, "搜索结果项的数量为1");
+				}
 				//targetInput.focus();
 
 				// var lis = document.querySelectorAll("ul.bx-select-ul li");

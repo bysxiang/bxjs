@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="../lib/qunit-1.19.0.js"></script>
+		<script type="text/javascript" src="../bx_select_pc.js"></script>
+		<link rel="stylesheet" href="../css/bx_select_pc.css" />
+		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
+		<script type="text/javascript">
+			QUnit.test("测试bx_select_pc1", function (assert)
+			{
+				var data = [
+						 { text: "javadshfdshfdsfdshkfhdskfhds", value: "1" },
+						 { text: "c#", value: "2" },
+						 { text: "ruby", value: "3" }
+						];
+				var bxSelect = new BxSelect({
+					element: document.getElementById("inputx"),
+					data: data,
+					search: function (searchStr)
+					{
+						return [{ text: "jjj", value: "0" }];
+					}
+				});
+
+				var lis = document.querySelectorAll("ul.bx-select-ul li");
+				assert.equal(lis.length, bxSelect.data.length, "li的个数与传递的长度相同");
+
+				var equalResult = false;
+				for (var i = 0; i < bxSelect.data.length; i++)
+				{
+					equalResult = (bxSelect.data[i].text == data[i].text && bxSelect.data[i].value == data[i].value);
+				}
+				assert.ok(equalResult, "数据匹配");
+
+
+				assert.equal(bxSelect.bxValue.length, 0, "未选中任何值时， bxValue是空数组");
+				assert.equal(bxSelect.bxText.length, 0, "未选中任何值时，bxText是空数组");
+
+				//不同选中重复值
+				lis[1].click();
+				assert.equal(bxSelect.bxValue.join(','), data[1].value, "选中第1个项");
+				assert.equal(bxSelect.bxText.join(','), data[1].text, "选中第一个项");
+
+				//再次选中这个值，
+				lis[1].click();
+				assert.notEqual(bxSelect.bxValue.join(','), data[1].value + "," + data[1].value, "每个选中项唯一");
+				assert.notEqual(bxSelect.bxText.join(','), data[1].text + "," + data[1].text, "每个选中项唯一");
+
+				//关闭被选中的项
+				var a = document.querySelector("[data-bx-x" + "='" + data[1].value + "']");
+				a.click();
+				var currentLis = document.querySelectorAll("ul.bx-button-ul li");
+				assert.equal(currentLis.length - 1, bxSelect.bxValue.length, "删除功能正常");
+				assert.equal(currentLis.length - 1, bxSelect.bxText.length, "删除功能正常");
+
+				//测试搜索功能
+				bxSelect.lastInput.value = "java";
+				var event = createEvent(13, 13);
+
+				bxSelect.lastInput.dispatchEvent(event);
+				var searchResultLis = document.querySelectorAll("ul.bx-select-ul li");
+				assert.equal(searchResultLis.length, 1, "搜索结果项的数量为1");
+
+				//搜索不到的情况
+				bxSelect.lastInput.value = "xxx";
+				var event = createEvent(13, 13);
+				bxSelect.lastInput.dispatchEvent(event);
+				var searchResultLis = document.querySelectorAll("ul.bx-select-ul li");
+				assert.equal(searchResultLis.length, 0, "搜索结果项的数量为0");
+
+				
+			});
+
+			function createEvent(keyCode, charCode)
+			{
+				var event = document.createEvent("Events");
+				event.initEvent("keyup", true, true);
+				event.view = document.defaultView;
+				event.altKey = false;
+				event.ctrlKey = false;
+				event.shiftKey = false;
+				event.metaKey = false;
+				event.keyCode = keyCode;
+				event.charCode = charCode;
+
+				return event;
+			}
+			
+		</script>
+	</head>
+
+	<body>
+		<h1 id="qunit-header">QUnit测试</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture"></div>
+
+    	<div style="margin-top: 150px;">
+
+			<input type="text" id="inputx" style="width: 200px; margin: 0; padding: 0; border: 0;" />
+		</div>
+
+	</body>
+</html>

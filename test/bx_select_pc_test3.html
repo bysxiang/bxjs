@@ -1,0 +1,95 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="Access-Control-Allow-Origin" content="http://192.168.1.89:3000">
+		<script type="text/javascript" src="../lib/qunit-1.19.0.js"></script>
+		<script type="text/javascript" src="../bx_select_pc.js"></script>
+		<link rel="stylesheet" href="../css/bx_select_pc.css" />
+		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
+		<script type="text/javascript">
+			QUnit.test("测试bx_select_pc3", function (assert)
+			{
+				var data = [
+						 { text: "javadshfdshfdsfdshkfhdskfhds", value: "1" },
+						 { text: "c#", value: "2" },
+						 { text: "ruby", value: "3" }
+						];
+
+				var remoteData = [{"text":"java","value":"1"},{"text":"Ruby","value":"2"},{"text":"Rust","value":"3"}];
+				var before = false;
+				var end = false;
+
+				var bxSelect = new BxSelect({
+					element: document.getElementById("inputx"),
+					data: data,
+					ajax: {
+						url: "http://192.168.1.89:30001/home/hello_test",
+						type: "get",
+						dataType: 'json',
+						beforeSend: function ()
+						{
+							before = true;
+							assert.ok(before, "正常触发before");
+						},
+						results: function (json)
+						{
+							return json;
+							//return [{"text":"java","value":1},{"text":"Ruby","value":2},{"text":"Rust","value":3}];
+						},
+						error: function ()
+						{
+							assert.ok(true, "触发error");
+							//alert("请求失败");
+						},
+						fillClose: function ()
+						{
+							end = true;
+							assert.ok(end, "正常触发fillClose");
+
+						
+						}
+
+					}
+				});
+
+				//当执行了搜索，并检索到数据后，会用ajax的数据替换当前的数据
+				bxSelect.lastInput.value = "";
+				var event = createEvent(13, 13);
+				bxSelect.lastInput.dispatchEvent(event);
+				
+			});
+
+			function createEvent(keyCode, charCode)
+			{
+				var event = document.createEvent("Events");
+				event.initEvent("keyup", true, true);
+				event.view = document.defaultView;
+				event.altKey = false;
+				event.ctrlKey = false;
+				event.shiftKey = false;
+				event.metaKey = false;
+				event.keyCode = keyCode;
+				event.charCode = charCode;
+
+				return event;
+			}
+			
+		</script>
+	</head>
+
+	<body>
+		<h1 id="qunit-header">QUnit测试</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture"></div>
+
+    	<div style="margin-top: 150px;">
+
+			<input type="text" id="inputx" style="width: 200px; margin: 0; padding: 0; border: 0;" />
+		</div>
+
+	</body>
+</html>
