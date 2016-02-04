@@ -7,14 +7,6 @@ var BxSelect = (function()
 	{
 		this.element = config.element;
 		this.data = config.data;
-		// if (!config.ajax)
-		// {
-		// 	this.data = config.data || [];
-		// }
-		// else
-		// {
-		// 	this.data = [];
-		// }
 		this.ajax = config.ajax;
 		//bxValue-控件的值, bxText-控件的文本显示值
 		this.bxValue = [];
@@ -36,15 +28,15 @@ var BxSelect = (function()
 		//设置divWrapper为绝对定位
 		this.divWrapper = document.createElement("div");
 		this.divWrapper.className = "bx-select-wrapper";
-		var wrapperCss = "background-color: white; width:" + targetWidth + "px; min-height:400px; position: relative;";
+		var wrapperCss = "background-color: white; width:" + targetWidth + "px; position: relative;";
 		this.divWrapper.style.cssText = wrapperCss; 
 
-		this.element.parentNode.appendChild(this.divWrapper);
+		//this.element.parentNode.appendChild(this.divWrapper);
+
+		insertAfter(this.divWrapper, this.element);
 		//document.body.appendChild(this.divWrapper);
 
 		this.buttonDiv = document.createElement("div"); //放置多选选项的容器
-		var buttonDivCss = " border: 1px solid; "
-		this.buttonDiv.style.cssText = buttonDivCss;
 		this.buttonUl = document.createElement("ul");
 		this.buttonUl.className = "bx-button-ul";
 		var buttonUlCss = "padding: 0 5px 0 0; position: relative; border: 1px solid #aaa; cursor: text; min-height: 26px;margin: 0; overflow: hidden; "
@@ -67,7 +59,7 @@ var BxSelect = (function()
 		this.listDiv = document.createElement("div");
 		this.listDiv.className = "bx-select-list";
 		var listDivCss = 
-			"width:" + targetWidth + "px;";
+			"width:" + targetWidth + "px; position: absolute; top: " + this.buttonDiv.clientHeight + "px; min-height: 150px;";
 		this.listDiv.style.cssText = listDivCss;
 		this.divWrapper.appendChild(this.listDiv);
 
@@ -100,6 +92,7 @@ var BxSelect = (function()
 		that.buttonDiv.addEventListener("click", function (event)
 		{
 			renderSelect(that, that.data);
+			that.listDiv.style.cssText += "top: " + that.buttonDiv.clientHeight;
 			that.listDiv.style.display = "";
 			that.lastInput.focus();
 			event.stopPropagation();
@@ -128,11 +121,14 @@ var BxSelect = (function()
 					that.element.setAttribute("data-bx-value", that.bxValue.join(","));// 对宿主元素进行赋值
 
 					appendItem(that, { text: text, value: value });
-					//触发selectedChanged事件
-					that.selectedChanged({
-						type: "add",
-						changedItem: { text: text, value: value }
-					});
+					if (that.selectedChanged)
+					{
+						//触发selectedChanged事件
+						that.selectedChanged({
+							type: "add",
+							changedItem: { text: text, value: value }
+						});
+					}
 				}
 			}
 			that.listDiv.style.display = "none";
@@ -322,10 +318,13 @@ var BxSelect = (function()
 				thatObj.element.setAttribute("data-bx-value", thatObj.bxValue.join(","));
 				event.currentTarget.parentNode.remove();
 				// 触发selectedChanged事件
-				thatObj.selectedChanged({
-					type: "delete",
-					changedItem: { text: text, value: value }			
-				});
+				if (thatObj.selectedChanged)
+				{
+					thatObj.selectedChanged({
+						type: "delete",
+						changedItem: { text: text, value: value }			
+					});
+				}
 			}		
 		});	
 
@@ -345,6 +344,32 @@ var BxSelect = (function()
 			appendItem(thatObj, { text: data[i].text, value: data[i].value });
 		}
 	};
+
+	//在一个元素之后追加内容
+	function insertAfter(newElement, targetElement)
+	{
+		var parentNode = targetElement.parentNode;
+		var nodes = parentNode.childNodes;
+
+		for (var i = 0; i < nodes.length; i++)
+		{
+			if (nodes[i] == targetElement)
+				break;
+		}
+
+		//如果当前元素后面还有元素，在新插入的元素前插入一个空格字符元素
+		if (nodes[i + 1])
+		{
+			parentNode.insertBefore(newElement, nodes[i + 1]);
+
+			var textNode = document.createTextNode(" ");
+			parentNode.insertBefore(textNode, newElement);
+		}
+		else
+		{
+			parentNode.appendChild(newElement);
+		}
+	}
 
 	return bxSelect;
 })();
