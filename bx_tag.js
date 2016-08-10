@@ -73,7 +73,7 @@ var BxTag = (function ()
 	function buildClearDiv()
 	{
 		var clearDiv = document.createElement("div");
-		var clearDivStyle = "clear: both;"
+		var clearDivStyle = "clear: both;";
 		clearDiv.style.cssText = clearDivStyle;
 
 		return clearDiv;
