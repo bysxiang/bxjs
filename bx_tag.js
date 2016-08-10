@@ -19,6 +19,9 @@ var BxTag = (function ()
 		document.body.appendChild(this.wrapperDiv);
 
 		initLabels(this, config.labelArray);
+
+		this.addTagEvent = config.addTagHandle;
+		this.removeTagEvent = config.removeTagHandle;
 	};	
 
 	function buildWrapperDiv()
@@ -49,11 +52,7 @@ var BxTag = (function ()
 
 			if (event.keyCode == 13)
 			{
-				if (val == "")
-				{
-					return false;
-				}
-				else
+				if (val != "")
 				{
 					if (outerObj.labelArray.indexOf(val) == -1 && outerObj.labelArray.length < outerObj.labelMaxLength )
 					{
@@ -83,7 +82,10 @@ var BxTag = (function ()
 	{
 		for (var i = 0; i < labelArray.length; i++)
 		{
-			addTag(outerObj, labelArray[i]);
+			if (outerObj.indexOf(labelArray[i]) == -1)
+			{
+				addTag(outerObj, labelArray[i]);
+			}
 		}
 	}
 
@@ -111,12 +113,21 @@ var BxTag = (function ()
     		outerObj.labelArray.splice(index, 1);
 
 			event.currentTarget.parentNode.remove();
+			if (outerObj.removeTagEvent && typeof outerObj.removeTagEvent == "function")
+			{
+				outerObj.removeTagEvent(outerObj);
+			};
     	}, false);
 
 	    span.appendChild(innerSpan);
 	    span.appendChild(innerA);
 
 	    outerObj.wrapperDiv.insertBefore(span, outerObj.inputDiv);
+	    outerObj.labelArray.push(labelName);
+	    if (outerObj.addTagEvent && typeof outerObj.addTagEvent == "function")
+	    {
+	    	outerObj.addTagEvent(outerObj);
+	    }
 	}
 
 	return bxTag;
