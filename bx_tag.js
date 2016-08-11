@@ -16,7 +16,8 @@ var BxTag = (function ()
 		this.wrapperDiv.appendChild(this.inputDiv);
 		document.body.appendChild(this.wrapperDiv);
 
-		initLabels(this, config.labelArray);
+		var labelArray = config.labelArray || [];
+		initLabels(this, labelArray);
 
 		this.addTagEvent = config.addTagEvent;
 		this.removeTagEvent = config.removeTagEvent;

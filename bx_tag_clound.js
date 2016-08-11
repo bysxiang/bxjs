@@ -9,7 +9,8 @@ var BxTagClound = (function ()
 		this.labelArray = [];
 		this.containerDiv = buildContainerDiv(config.containerDiv);
 
-		initLabels(this, config.labelArray);
+		var labelArray = config.labelArray || [];
+		initLabels(this, labelArray);
 
 		this.tagClickEvent = config.tagClickEvent;
 	};
