@@ -1,0 +1,27 @@
+<html style="font-size: 20px;">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,user-scalable=no" />
+		<title></title>
+
+		<script type="text/javascript" src="./bx_tag_m.js"></script>
+		<script type="text/javascript">
+			function ff()
+			{	
+				var arr = ["你好", "java", "Ruby"];
+				var containerDiv = document.getElementById("wrapperDiv");
+				var config = { labelArray: arr, containerDiv: containerDiv };
+				var tag = new BxTagM(config);
+			}
+
+		</script>
+		<style type="text/style">
+			* { box-sizing: border-box;  }
+		</style>
+	</head>
+	<body onload="ff()">
+		<div id="wrapperDiv" style="border: 1px solid #CCC; background: #FFF; padding: 5px; width: 200px; height: 50px; overflow-y: auto;">
+
+		</div>
+	</body>
+</html>

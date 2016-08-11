@@ -2,10 +2,9 @@
 
 "version: 0.0.1";
 
-var BxTag = (function ()
+var BxTagM = (function ()
 {
-	// 构造函数
-	var bxTag = function (config)
+	var bxTagM = function (config)
 	{
 		this.labelArray = [];
 		this.labelMaxLength = config.labelMaxLength || 3;
@@ -22,27 +21,18 @@ var BxTag = (function ()
 
 		this.addTagEvent = config.addTagHandle;
 		this.removeTagEvent = config.removeTagHandle;
-	};	
-
-	function buildWrapperDiv()
-	{
-		var divWrapper = document.createElement("div");
-		var divWrapperStyle = "border: 1px solid #CCC; background: #FFF; padding: 5px; width: 500px; height: 100px; overflow-y: auto;";
-		divWrapper.style.cssText = divWrapperStyle;
-
-		return divWrapper;
-	}
+	};
 
 	function buildInputDiv(outerObj)
 	{
 		// 输入div框
 		var inputDiv = document.createElement("div");
-		var inputDivStyle = "display: block; float: left;";
+		var inputDivStyle = "float: left;";
 		inputDiv.style.cssText = inputDivStyle;
 
 		var inputTxt = document.createElement("input");
 		inputTxt.type = "text";
-		var inputTxtStyle = "color: rgb(102, 102, 102); width: 68px; margin: 0px; font-family: helvetica; font-size: 13px; border: 1px solid transparent";
+		var inputTxtStyle = "color: rgb(102, 102, 102); width: 3.4rem; margin: 0px; font-family: helvetica; font-size: 0.65rem; border: 1px solid transparent";
 		inputTxtStyle += "padding: 5px; background: transparent; outline: 0px; margin-right: 5px; margin-bottom: 5px;";
 		inputTxt.style.cssText = inputTxtStyle;
 
@@ -93,7 +83,7 @@ var BxTag = (function ()
 	{
 		var span = document.createElement("span");
 		var spanStyle = "border: 1px solid #a5d24a;-moz-border-radius: 2px;-webkit-border-radius: 2px;display: block;float: left;padding: 5px;text-decoration: none;";
-		spanStyle += "background: #cde69c; color: #638421; margin-right: 5px; margin-bottom: 5px; font-family: helvetica;font-size: 13px;" 
+		spanStyle += "background: #cde69c; color: #638421; margin-right: 5px; margin-bottom: 5px; font-family: helvetica;font-size: 0.65rem;" 
 		span.style.cssText = spanStyle;
 
 	    var innerSpan = document.createElement("span");
@@ -102,7 +92,7 @@ var BxTag = (function ()
 	    innerSpan.style.cssText = innerSpanStyle;
 
 	    var innerA = document.createElement("a");
-	    var innerAStyle = "font-weight: bold;color: #82ad2b;text-decoration: none; font-size: 11px; padding-left: 0.5em;";
+	    var innerAStyle = "font-weight: bold;color: #82ad2b;text-decoration: none; font-size: 0.55rem; padding-left: 0.5em;";
 	    innerA.style.cssText = innerAStyle;
 	    innerA.href = "#";
 	    innerA.innerHTML = "X";
@@ -130,6 +120,5 @@ var BxTag = (function ()
 	    }
 	}
 
-	return bxTag;
-
+	return bxTagM;
 })();
