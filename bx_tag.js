@@ -12,10 +12,8 @@ var BxTag = (function ()
 
 		this.wrapperDiv = config.containerDiv;
 		this.inputDiv = buildInputDiv(this);
-		this.clearDiv = buildClearDiv();
 
 		this.wrapperDiv.appendChild(this.inputDiv);
-		this.wrapperDiv.appendChild(this.clearDiv);
 		document.body.appendChild(this.wrapperDiv);
 
 		initLabels(this, config.labelArray);
@@ -24,11 +22,9 @@ var BxTag = (function ()
 		this.removeTagEvent = config.removeTagHandle;
 	};	
 
-	function buildWrapperDiv()
+	function buildWrapperDiv(wrapperDiv)
 	{
-		var divWrapper = document.createElement("div");
-		var divWrapperStyle = "border: 1px solid #CCC; background: #FFF; padding: 5px; width: 500px; height: 100px; overflow-y: auto;";
-		divWrapper.style.cssText = divWrapperStyle;
+		wrapperDiv.className = "bx_tag_wrapper";
 
 		return divWrapper;
 	}
@@ -37,14 +33,10 @@ var BxTag = (function ()
 	{
 		// 输入div框
 		var inputDiv = document.createElement("div");
-		var inputDivStyle = "display: block; float: left;";
-		inputDiv.style.cssText = inputDivStyle;
+		inputDiv.className = "bx_tag_input_div";
 
 		var inputTxt = document.createElement("input");
 		inputTxt.type = "text";
-		var inputTxtStyle = "color: rgb(102, 102, 102); width: 68px; margin: 0px; font-family: helvetica; font-size: 13px; border: 1px solid transparent";
-		inputTxtStyle += "padding: 5px; background: transparent; outline: 0px; margin-right: 5px; margin-bottom: 5px;";
-		inputTxt.style.cssText = inputTxtStyle;
 
 		inputTxt.addEventListener("keyup", function (event)
 		{
@@ -69,15 +61,6 @@ var BxTag = (function ()
 		return inputDiv;
 	}
 
-	function buildClearDiv()
-	{
-		var clearDiv = document.createElement("div");
-		var clearDivStyle = "clear: both;";
-		clearDiv.style.cssText = clearDivStyle;
-
-		return clearDiv;
-	}
-
 	function initLabels(outerObj, labelArray)
 	{
 		for (var i = 0; i < labelArray.length; i++)
@@ -92,18 +75,12 @@ var BxTag = (function ()
 	function addTag(outerObj, labelName)
 	{
 		var span = document.createElement("span");
-		var spanStyle = "border: 1px solid #a5d24a;-moz-border-radius: 2px;-webkit-border-radius: 2px;display: block;float: left;padding: 5px;text-decoration: none;";
-		spanStyle += "background: #cde69c; color: #638421; margin-right: 5px; margin-bottom: 5px; font-family: helvetica;font-size: 13px;" 
-		span.style.cssText = spanStyle;
+		span.className = "bx_tag_outer_span";
 
 	    var innerSpan = document.createElement("span");
 	    innerSpan.innerHTML = labelName;
-	    var innerSpanStyle = "color: rgb(99, 132, 33); font-size: 13px; font-family: heivetica;"
-	    innerSpan.style.cssText = innerSpanStyle;
 
 	    var innerA = document.createElement("a");
-	    var innerAStyle = "font-weight: bold;color: #82ad2b;text-decoration: none; font-size: 11px; padding-left: 0.5em;";
-	    innerA.style.cssText = innerAStyle;
 	    innerA.href = "#";
 	    innerA.innerHTML = "X";
 	    innerA.addEventListener("click", function (event)
