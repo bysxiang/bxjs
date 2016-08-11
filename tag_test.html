@@ -9,7 +9,10 @@
 			{	
 				var arr = ["你好", "java", "Ruby"];
 				var containerDiv = document.getElementById("wrapperDiv");
-				var config = { labelArray: arr, containerDiv: containerDiv };
+				var config = { labelArray: arr, containerDiv: containerDiv, addTagEvent: function (obj)
+				{
+					alert(obj);
+				} };
 				var tag = new BxTag(config);
 			}
 

@@ -18,8 +18,8 @@ var BxTag = (function ()
 
 		initLabels(this, config.labelArray);
 
-		this.addTagEvent = config.addTagHandle;
-		this.removeTagEvent = config.removeTagHandle;
+		this.addTagEvent = config.addTagEvent;
+		this.removeTagEvent = config.removeTagEvent;
 	};	
 
 	function buildWrapperDiv(wrapperDiv)
@@ -92,7 +92,8 @@ var BxTag = (function ()
 			event.currentTarget.parentNode.remove();
 			if (outerObj.removeTagEvent && typeof outerObj.removeTagEvent == "function")
 			{
-				outerObj.removeTagEvent(outerObj);
+				var event = { type: 'removeTagEvent', addTagName: val };
+				outerObj.removeTagEvent(event);
 			};
     	}, false);
 
@@ -103,7 +104,8 @@ var BxTag = (function ()
 	    outerObj.labelArray.push(labelName);
 	    if (outerObj.addTagEvent && typeof outerObj.addTagEvent == "function")
 	    {
-	    	outerObj.addTagEvent(outerObj);
+	    	var event = { type: 'addTagEvent', removeTagName: labelName };
+	    	outerObj.addTagEvent(event);
 	    }
 	}
 
