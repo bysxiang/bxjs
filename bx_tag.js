@@ -92,8 +92,8 @@ var BxTag = (function ()
 			event.currentTarget.parentNode.remove();
 			if (outerObj.removeTagEvent && typeof outerObj.removeTagEvent == "function")
 			{
-				var event = { type: 'removeTagEvent', addTagName: val };
-				outerObj.removeTagEvent(event);
+				var e = { type: 'removeTagEvent', addTagName: val };
+				outerObj.removeTagEvent(e);
 			};
     	}, false);
 
@@ -104,8 +104,8 @@ var BxTag = (function ()
 	    outerObj.labelArray.push(labelName);
 	    if (outerObj.addTagEvent && typeof outerObj.addTagEvent == "function")
 	    {
-	    	var event = { type: 'addTagEvent', removeTagName: labelName };
-	    	outerObj.addTagEvent(event);
+	    	var e = { type: 'addTagEvent', removeTagName: labelName };
+	    	outerObj.addTagEvent(e);
 	    }
 	}
 

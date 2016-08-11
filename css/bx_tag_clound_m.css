@@ -1,0 +1,36 @@
+.bx_tag_clound_wrapper {
+	padding: 0.5rem 0; 
+	margin-bottom: 0.5rem; 
+	margin-top: 0.5rem; 
+	border: silver 1px transparent;
+	font-size: 0.6rem;
+	width: 17.5rem;
+	text-align: center; 
+	height: 1.5rem;
+}
+
+.bx_tag_clound_wrapper:after {
+	content: ".";
+	height: 0;
+	visibility: hidden;
+	display: block;
+	clear: both;
+}
+
+.bx_tag_clound_wrapper span {
+	border: 1px solid #a5d24a;
+	-moz-border-radius: 0.01rem;
+	-webkit-border-radius: 0.01rem;
+	display: block;
+	float: left;
+	padding: 0.25rem;
+	text-decoration: none;
+	background: #cde69c; 
+	color: #638421; 
+	font-family: helvetica;
+	width: 4.4rem;
+	line-height: 1.2rem;
+	font-size: 0.9rem;
+	margin: 0.1rem; 
+	cursor: pointer;
+}

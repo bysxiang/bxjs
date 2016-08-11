@@ -52,7 +52,8 @@
 
 .bx_tag_outer_span span {
 	color: rgb(99, 132, 33); 
-	font-size: 0.65; 
+	font-size: 0.7rem; 
+	line-height: 1rem;
 	font-family: heivetica;
 }
 
