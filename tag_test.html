@@ -15,6 +15,11 @@
 				} };
 				var tag = new BxTag(config);
 			}
+			
+			function ft(event)
+			{
+				console.log("触发form。keydown");
+			}
 
 		</script>
 		<link href="css/bx_tag.css" rel="stylesheet" type="text/css" />
@@ -23,8 +28,14 @@
 		</style>
 	</head>
 	<body onload="ff()">
-		<div id="wrapperDiv">
+		<form onkeydown="ft(event)">
+			<input type="text" name="age" />
+			<div id="wrapperDiv">
 
-		</div>
+			</div>
+			
+			<input type="submit" value="提交" />
+		</form>
+		
 	</body>
 </html>

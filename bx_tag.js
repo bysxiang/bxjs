@@ -8,13 +8,12 @@ var BxTag = (function ()
 	var bxTag = function (config)
 	{
 		this.labelArray = [];
-		this.labelMaxLength = config.labelMaxLength || 3;
+		this.labelMaxLength = config.labelMaxLength || 5;
 
-		this.wrapperDiv = config.containerDiv;
+		this.wrapperDiv = buildWrapperDiv(config.containerDiv);
 		this.inputDiv = buildInputDiv(this);
 
 		this.wrapperDiv.appendChild(this.inputDiv);
-		document.body.appendChild(this.wrapperDiv);
 
 		var labelArray = config.labelArray || [];
 		initLabels(this, labelArray);
@@ -25,21 +24,21 @@ var BxTag = (function ()
 
 	function buildWrapperDiv(wrapperDiv)
 	{
-		wrapperDiv.className = "bx_tag_wrapper";
+		wrapperDiv.className += " bx_tag_wrapper";
 
-		return divWrapper;
+		return wrapperDiv;
 	}
 
 	function buildInputDiv(outerObj)
 	{
 		// 输入div框
 		var inputDiv = document.createElement("div");
-		inputDiv.className = "bx_tag_input_div";
+		inputDiv.className += " bx_tag_input_div";
 
 		var inputTxt = document.createElement("input");
 		inputTxt.type = "text";
 
-		inputTxt.addEventListener("keyup", function (event)
+		inputTxt.addEventListener("keydown", function (event)
 		{
 			var val = event.currentTarget.value.trim();
 
@@ -49,13 +48,17 @@ var BxTag = (function ()
 				{
 					if (outerObj.labelArray.indexOf(val) == -1 && outerObj.labelArray.length < outerObj.labelMaxLength )
 					{
-						outerObj.labelArray.push(val);
 						addTag(outerObj, val);
 						event.currentTarget.value = "";
 					}
 				}
+				event.stopPropagation();
 			}
+
+
 		}, false);
+
+
 
 		inputDiv.appendChild(inputTxt);
 
@@ -76,7 +79,7 @@ var BxTag = (function ()
 	function addTag(outerObj, labelName)
 	{
 		var span = document.createElement("span");
-		span.className = "bx_tag_outer_span";
+		span.className += " bx_tag_outer_span";
 
 	    var innerSpan = document.createElement("span");
 	    innerSpan.innerHTML = labelName;
