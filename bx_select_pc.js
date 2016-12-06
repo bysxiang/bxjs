@@ -92,7 +92,7 @@ var BxSelect = (function()
 		that.buttonDiv.addEventListener("click", function (event)
 		{
 			renderSelect(that, that.data);
-			that.listDiv.style.cssText += "top: " + that.buttonDiv.clientHeight;
+			that.listDiv.style.top = that.buttonDiv.clientHeight + "px";
 			that.listDiv.style.display = "";
 			that.lastInput.focus();
 			event.stopPropagation();
