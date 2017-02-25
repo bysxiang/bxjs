@@ -6,6 +6,7 @@ var Ybs = {
 	}
 };
 
+
 Ybs.Ui.MultiSelectQuantity = (function ()
 {
 	var select = function (config)
@@ -28,7 +29,6 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 		this.loading = false;
 		this.charLength = config.charLength || 3;
 		this.delay = config.delay || 300;
-		this.maxQuantity = confit.maxQuantity || 10;
 		
 		this.ajaxConfig = config.ajax;
 		// selectedItems 是一个对象数组，它包括 text, value, quantity
@@ -47,24 +47,19 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 	select.prototype.selectedValues = function () 
 	{
 		var values = [];
-		for (var i = 0; i < this.selectedItems.length; i++)
+		for (var i = 0; i < this.rightUl.children.length; i++)
 		{
-			var item = { value: this.selectedItems[i].value, quantity: this.selectedItems[i].quantity };
+			var li = this.rightUl.children[i];
+			var item = {
+				value: li.dataset.liValue,
+				text: li.dataset.liText,
+				quantity: parseInt(li.dataset.liQuantity)
+			};
+			
 			values.push(item);
 		}
 
 		return values;
-	};
-
-	select.prototype.selectedTexts = function ()
-	{
-		var texts = [];
-		for (var i = 0; i < this.selectedItems.length; i++)
-		{
-			values.push(this.selectedItems[i].text);
-		}
-
-		return texts;
 	};
 	
 	function doEvents(that)
@@ -125,7 +120,7 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 								{
 									if (existItem(that.rightUl, result[i].text) == false)
 									{
-										appendItemAndQuantity(that.leftUl, result[i].value, result[i].text, 1);
+										appendItem(that.leftUl, result[i].value, result[i].text);
 									}
 								}
 							}
@@ -302,7 +297,9 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 		var input = document.createElement("input");
 		input.type = "number";
 		input.min = 1;
+		input.max = 20;
 		input.value = quantity;
+		input.addEventListener('change', changedQuantityEvent, false);
 	
 		li.appendChild(span);
 		li.appendChild(input);
@@ -334,9 +331,9 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 		return exist;
 	}
 	
-	function removeLi(ul, value)
+	function changedQuantityEvent(event)
 	{
-		
+		event.currentTarget.parentNode.dataset.liQuantity = event.currentTarget.value;
 	}
 	
 	//对url添加查询字符串
