@@ -1,0 +1,26 @@
+.multi-left-div { float: left; width: 30%;  }
+.multi-middle-div { float:left; width: 12%; position: relative; }
+.multi-right-div { float: left;  width: 30%; }
+.multi-aside-div { float: left; width: 26%; }
+
+.multi-wrapper-div {  
+	margin: 10px 0; 
+	width: 600px;
+}
+.multi-wrapper-div:after {
+	content: '.';
+	height: 0;
+	visibility: hidden;
+	display: block;
+	clear:both;
+}
+.multi-wrapper-div ul {
+	margin: 0; list-style-type: none; height: 300px; padding: 0;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); border: 1px solid #ccc;
+	border-radius: 3px; transition: border linear 0.2s, box-shadow linear 0.2s;
+}
+
+.multi-wrapper-div li {
+	border-bottom: 1px #eee solid; padding: 2px 10px; color: #555; font-size: 14px;
+	line-height: 20px;
+}

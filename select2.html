@@ -1,0 +1,169 @@
+<html style="font-size: 20px;">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <style type="text/css">
+        ul { list-style: none; margin: 0px; padding: 0px;}
+        ul li { 
+            padding: 5px; list-style: none; 
+            word-break: break-all; border: 1px solid #dedede;
+            font-size: 14px;
+        }
+
+        #wrapper_div { width: 200px; top:53px; left: 40px;  }
+        #ul_div { overflow: auto; border: 0px solid #ccc; position: relative; min-height: 200px; }
+        #tip { position: absolute; top: 0; left: 0; background: white; width: 173px; }
+
+
+        #div_a { border: 1px solid #dcdcdc; border-radius: 2px; padding: 4px 8px; display: block; 
+            position: relative; width: 200px; font-size: 13px; line-height: 20px; margin: 5px 0; 
+        }
+        #div_a:hover { background-color: #f4f4f4;  }
+
+        #div_a span { margin-right: 26px; display: block; white-space: nowrap; 
+            text-overflow: ellipsis; overflow: hidden;  }
+        #div_a abbr { position: absolute; right: 26px; top: 8px; width: 12px; height: 12px; font-size: 17px;
+            line-height: 16px; color: #595959; font-weight: 700; cursor: pointer; text-decoration: none;
+            border: 0; outline: 0;
+        }
+
+        #txt_search { width: 200px;  }
+    </style>
+
+</head>
+
+<body>
+
+    <input type="text" id="text1" />
+    <div id="div_a">
+        <span id="span_name">选择产品精神的理解方式的fsafsda</span>
+        <abbr id="span_close">x</abbr>
+    </div>
+
+    <div id="wrapper_div">
+        
+        <div id="input_div">
+            <input type="text" value="" id="txt_search" placeholder="搜索" />
+        </div>
+        <div id="ul_div">
+            <ul id="ul1">
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var txtSearch = document.getElementById('txt_search');
+        var ajaxStatus = false;
+        var statusId = 0;
+        var text1 = document.getElementById('text1');
+        var tip = document.getElementById('tip');
+        var ul1 = document.getElementById('ul1');
+        var spanName = document.getElementById('span_name');
+        var spanClose = document.getElementById('span_close');
+        var divA = document.getElementById('div_a');
+        var wrapperDiv = document.getElementById('wrapper_div');
+        var timeOut;
+
+        // 初始化函数
+        (function () {
+            //text1.style.display = "none";
+            //ul1.style.display = "none";
+            //tip.style.display = "none";
+
+            spanClose.style.display = "none";
+            wrapperDiv.style.display = "none";
+        }) ();
+
+        divA.addEventListener('click', function (event) {
+            if (wrapperDiv.style.display == "none")
+            {
+                wrapperDiv.style.display = "";
+            }
+            else
+            {
+                wrapperDiv.style.display = "none";
+            }
+        }, false);
+
+        spanClose.addEventListener('click', function (event) {
+            spanName.innerHTML = "选择产品精神的理解方式的sfs";
+            spanClose.style.display = "none";
+
+            event.stopPropagation();
+        }, false);
+
+
+        txtSearch.addEventListener('keyup', function (event) {
+            var val = event.currentTarget.value;
+
+            if (val.length >= 3)
+            {
+                window.clearTimeout(timeOut);
+                timeOut = window.setTimeout(function ()
+                {
+                    ajax(function () {
+                        var names = [ "java", "c#", "ruby" ];
+
+                        for (var i = 0; i < names.length; i++)
+                        {
+                            var li = document.createElement("li");
+                            li.innerHTML = names[i];
+                            li.addEventListener('click', li_click, false);
+                            li.dataset.iii = "hello";
+
+                            ul1.appendChild(li);
+                        }
+                    });
+                }, 500);
+                
+            }
+        }, false);
+
+        function ajax(successCallback, errorCallback)
+        {
+            if (!ajaxStatus)
+            {
+                ajaxStatus = true;
+                var tipLi = document.createElement("li");
+                tipLi.innerHTML = "索索中";
+                
+
+                if (ul1.firstChild)
+                {
+                    ul1.insertBefore(tipLi, ul1.firstChild);
+                }
+                else
+                {
+                    ul1.appendChild(tipLi);
+                }
+
+                window.setTimeout(function () {
+                    if (successCallback && typeof successCallback == "function")
+                    {
+                        ul1.removeChild(ul1.childNodes[0]);
+                        successCallback();
+                    }
+                    ajaxStatus = false;
+                    
+                }, 3000);
+                
+            }
+            
+        }
+
+        function li_click(event) {
+            
+            spanName.innerHTML = event.currentTarget.innerHTML;
+
+            
+            spanClose.style.display = "";
+
+            console.log(event.currentTarget.dataset.iii);
+        }
+
+    </script>
+</body>
+
+</html>

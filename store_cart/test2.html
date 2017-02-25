@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>测试</title>
+		<script type="text/javascript" src="store_cart.js"></script>
+		<script type="text/javascript" src="voucher.js"></script>
+		<script type="text/javascript" src="../lib/qunit-1.19.0.js"></script>
+		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
+		
+		<script type="text/javascript">
+			QUnit.test("测试needVoucher", function (assert)
+			{
+				var product = new Ybs.Store.Product(1, "苹果", 0, 10, 8.5, 10, 10, 2);
+				var item = new Ybs.Store.Item(product, 2);
+				var order = new Ybs.Store.Order(0, false, '');
+				order.add(item);
+				
+				var vouchers = [
+					new Ybs.Store.Voucher(1, '苹果券', [1, 3], 10),
+					new Ybs.Store.Voucher(2, '鸭梨券', [2, 4], 10)
+				];
+				var consumer = new Ybs.Store.Consumer(1, "元帅", "188", 30, 20, "", 1, false, 1, 1, 1, 1, 0,
+				vouchers);
+				
+				assert.ok(vouchers[0].isPay(order));
+				assert.equal(vouchers[1].isPay(order), false);
+				
+				var needVoucher = consumer.needVoucher(order, true, 1);
+				assert.equal(10, needVoucher);
+				
+				var balancePay = consumer.balancePay(order, true, 1);
+				assert.equal(7, balancePay);
+				
+				var needPay = consumer.needPay(order, false, true, 1);
+				assert.equal(7, needPay);
+				
+				var needPay2 = consumer.needPay(order, true, true, 1);
+				assert.equal(0, needPay2);
+				
+				var needBalance = consumer.needBalance(order, 20, true, true, 1);
+				assert.equal(0, needBalance);
+				
+				consumer.balance = 10;
+				var needBalance2 = consumer.needBalance(order, 3, true, true, 1);
+				assert.equal(4, needBalance2);
+				
+				consumer.balance = 10;
+				var needBalance3 = consumer.needBalance(order, 8, true, true, 1);
+				assert.equal(0, needBalance3);
+			});
+			
+			
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header">QUnit测试</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture"></div>
+	</body>
+</html>

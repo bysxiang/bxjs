@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>测试</title>
+		<script type="text/javascript" src="store_cart.js"></script>
+		<script type="text/javascript" src="voucher.js"></script>
+		<script type="text/javascript" src="../lib/qunit-1.19.0.js"></script>
+		<link rel="stylesheet" href="../lib/qunit-1.19.0.css" />
+		
+		<script type="text/javascript">
+			QUnit.test("测试cashPay", function (assert)
+			{
+				var product = new Ybs.Store.Product(1, "苹果", 0, 10, 8.5, 10, 10, 2);
+				var item = new Ybs.Store.Item(product, 2);
+				var order = new Ybs.Store.Order(0, false, '');
+				order.add(item);
+				
+				var vouchers = [
+					new Ybs.Store.Voucher(1, '苹果券', [1, 3], 10),
+					new Ybs.Store.Voucher(2, '鸭梨券', [2, 4], 10)
+				];
+				var consumer = new Ybs.Store.Consumer(1, "元帅", "188", 30, 20, "", 1, false, 1, 1, 1, 1, 0,
+				vouchers);
+				
+//				consumer.balance = 10;
+//				
+//				var left = consumer.cashPay(order, 5, true, true, 1);
+//				assert.equal(5, left);
+				
+				consumer.balance = 10;
+//				var left = consumer.cashPay(order, 17, true, true);
+//				assert.equal(left, 0);
+				var need = consumer.needPay(order, 16, true, true);
+				
+				assert.equal(need, 16);
+				
+				//var balance = consumer.needBalance(order, true, true);
+				
+				//assert.equal(need + balance, 17);
+				
+				
+				
+			});
+			
+			
+		</script>
+	</head>
+	<body>
+		<h1 id="qunit-header">QUnit测试</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture"></div>
+	</body>
+</html>
+
