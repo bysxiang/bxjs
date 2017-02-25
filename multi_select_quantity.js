@@ -1,11 +1,10 @@
 "use strict";
 
 var Ybs = {
-	Ui: {
-		
-	}
+    Ui: {
+        
+    }
 };
-
 
 Ybs.Ui.MultiSelectQuantity = (function ()
 {
@@ -28,7 +27,7 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 		this.timeOut = 0;
 		this.loading = false;
 		this.charLength = config.charLength || 3;
-		this.delay = config.delay || 300;
+		this.delay = config.delay || 500;
 		
 		this.ajaxConfig = config.ajax;
 		// selectedItems 是一个对象数组，它包括 text, value, quantity
@@ -99,6 +98,7 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 		that.element.addEventListener('keyup', function (event) {
 			var val = event.currentTarget.value;
 			
+			console.log("顶部val:" + val);
 			if (val.length >= that.charLength && that.loading == false)
 			{
 				window.clearTimeout(that.timeOut);
@@ -139,10 +139,12 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 					var url = that.ajaxConfig.url;
 					if (that.ajaxConfig.data)
 					{
+						console.log("val:" + val);
+						console.log("that.element.val : " + that.element.value);
 						var data  = (that.ajaxConfig.data && typeof that.ajaxConfig.data == "function") ?
 							that.ajaxConfig.data(val) : [];
 						
-						for (var p in data)
+						for (var p in data) 
 						{
 							url = addURLParam(url, p, data[p]);
 						}
@@ -155,7 +157,7 @@ Ybs.Ui.MultiSelectQuantity = (function ()
 					
 				}, that.delay);
 			}
-			else if (val.length < that.charLength)
+			else if (that.loading == false)
 			{
 				window.clearTimeout(that.timeOut);
 			}
