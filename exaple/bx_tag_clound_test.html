@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+
+		<script type="text/javascript" src="./bx_tag_clound.js"></script>
+		<script type="text/javascript">
+			function ff()
+			{	
+				var arr = ["你好", "java", "Ruby"];
+				var containerDiv = document.getElementById("wrapperDiv");
+				var config = { labelArray: arr, containerDiv: containerDiv, tagClickEvent: function (obj)
+				{
+					var tagName = obj.tagName;
+					
+					alert("你单击的是: " + tagName);	
+				} };
+				var tag = new BxTagClound(config);
+			}
+
+		</script>
+		<link href="css/bx_tag_clound.css" rel="stylesheet" type="text/css" />
+		<style type="text/style">
+			* { box-sizing: border-box;  }
+		</style>
+	</head>
+	<body onload="ff()">
+		<div id="wrapperDiv">
+
+		</div>
+	</body>
+</html>

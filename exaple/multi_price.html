@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+		<style type="text/css">
+			#container { 
+				border: 1px solid lightgray; 
+				background: lightcyan; 
+				
+			}
+			#container div:nth-child(1) { 
+				margin: 10px; 
+				
+			}
+			
+			div.price-row { margin: 10px; padding: 10px; border-bottom: 1px dashed lightcoral; }
+		</style>
+	</head>
+	<body>
+		
+		
+		<div id="container">
+			<div>
+				<input id="btnAdd" type="button" value="添加" />
+			</div>
+			
+			
+		</div>
+		
+		<script type="text/html" id="price_row_tpl">
+			<div class="price-row">
+				<label>金额：</label><input type="number" step="0.01" min="0.01" /> 
+				
+				<label>权利金：</label><input type="number" step="0.01" min="0.01" />
+				
+				<input type="button" value="X" class="delete-btn" onclick="delete_row(event)" />
+			</div>
+		</script>
+		
+		<script type="text/javascript">
+			
+		
+		
+			(function () {
+				appendItem();
+			})();
+		
+			var btnAdd = document.getElementById("btnAdd");
+			
+			btnAdd.addEventListener('click', function (event) {
+				appendItem();
+			}, false);
+			
+			function appendItem()
+			{
+				var tpl = document.getElementById("price_row_tpl").innerHTML;
+				
+				var container = document.getElementById("container");
+				var node = parseToDOM(tpl.trim());
+				container.appendChild(node[0]);
+			}
+			
+			function parseToDOM(str)
+			{
+			    var div = document.createElement("div");
+			   	if(typeof str == "string")
+			   	{
+			   		div.innerHTML = str;
+			   	}
+			       
+			   	return div.childNodes;
+			}
+			
+			function delete_row(event)
+			{
+				event.currentTarget.parentNode.remove();
+			}
+		
+		</script>
+	</body>
+</html>
